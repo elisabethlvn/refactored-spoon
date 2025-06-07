@@ -1,0 +1,65 @@
+/* Icon size and alignment adjustments */
+
+/* Ensure card content is vertically centered */
+.contact-item, 
+.contact-emergency {
+  display: flex;
+  align-items: center;
+}
+
+/* Make all contact icons consistent in size */
+.contact-icon img,
+.emergency-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+/* Center icons in their containers */
+.contact-icon,
+.emergency-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Adjust positioning for mobile view */
+@media (max-width: 480px) {
+  .contact-item {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .contact-icon,
+  .emergency-icon {
+    margin: 0 auto 15px;
+  }
+  
+  .contact-details {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Compact styling for text in contact cards */
+.contact-details p, 
+.emergency-content p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Reduce spacing between link and surrounding elements */
+.contact-details a,
+.emergency-content a {
+  display: inline-block;
+  margin-top: 3px;
+}
+
+/* Proper vertical alignment for text */
+.contact-details,
+.emergency-content {
+  gap: 6px;
+}

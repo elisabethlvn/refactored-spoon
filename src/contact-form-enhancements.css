@@ -1,0 +1,154 @@
+/* Contact Form Enhancements - Simplified */
+.contact-form {
+  background: #ffffff;
+  padding: 30px 26px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.contact-form:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.contact-form .form-header {
+  margin-bottom: 24px;
+  position: relative;
+  padding-left: 1px;
+}
+
+.form-title {
+  font-size: 1.45rem;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  position: relative;
+}
+
+.form-subtitle {
+  font-size: 0.92rem;
+  color: #777;
+  padding-top: 4px;
+}
+
+.contact-form .form-group {
+  margin-bottom: 16px;
+  position: relative;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.contact-form .form-group label {
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+  color: #555;
+  transition: color 0.3s ease;
+  display: inline-block;
+}
+
+.contact-form .form-group input,
+.contact-form .form-group select,
+.contact-form .form-group textarea {
+  padding: 12px 14px;
+  transition: all 0.3s ease;
+  border: 2px solid #eaeaea;
+  border-radius: 8px;
+  position: relative;
+}
+
+.contact-form .form-group input:focus,
+.contact-form .form-group select:focus,
+.contact-form .form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.contact-form .form-note {
+  margin: 16px 0;
+  font-size: 0.85rem;
+}
+
+/* Simplified checkbox styling */
+.contact-form .checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form .checkbox-group:hover {
+  background: rgba(52, 152, 219, 0.05);
+}
+
+.contact-form .checkbox-group label {
+  line-height: 1.4;
+  font-size: 0.92rem;
+}
+
+/* Submit button styling simplified to match appointment form */
+.contact-submit-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+}
+
+.btn-icon {
+  transition: transform 0.3s ease;
+}
+
+.contact-submit-btn:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+.contact-form .form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.contact-form .form-row .form-group {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 26px 22px;
+  }
+  
+  .contact-form .form-header {
+    margin-bottom: 20px;
+  }
+  
+  .contact-submit-btn {
+    padding: 12px 20px;
+  }
+  
+  .contact-form .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

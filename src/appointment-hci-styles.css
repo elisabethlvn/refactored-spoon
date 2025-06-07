@@ -1,0 +1,692 @@
+/* Enhanced Appointment Section - HCI Focused Design */
+
+.appointment-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+  padding: 60px 20px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.appointment-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3498db, transparent);
+  opacity: 0.6;
+}
+
+.appointment-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.appointment-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-bottom: 50px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.appointment-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Left Side - Information & Progress */
+.appointment-info {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.08);
+  position: sticky;
+  top: 100px;
+}
+
+.appointment-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.appointment-info h3::before {
+  content: "📋";
+  font-size: 1.2rem;
+}
+
+/* Simplified Step Indicator */
+.step-indicator {
+  margin-bottom: 40px;
+}
+
+.step-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.step-progress::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 25px;
+  right: 25px;
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.step-progress-line {
+  position: absolute;
+  top: 50%;
+  left: 25px;
+  height: 2px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  transition: width 0.5s ease;
+  z-index: 2;
+  transform: translateY(-50%);
+  border-radius: 1px;
+}
+
+.step-progress-line.step-0 { width: 0; }
+.step-progress-line.step-1 { width: calc(33.33% - 10px); }
+.step-progress-line.step-2 { width: calc(66.66% - 10px); }
+.step-progress-line.step-3 { width: calc(100% - 50px); }
+
+.step-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #64748b;
+  position: relative;
+  z-index: 3;
+  transition: all 0.3s ease;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.step-circle.active {
+  background: #3498db;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.3);
+}
+
+.step-circle.completed {
+  background: #2ecc71;
+  color: #ffffff;
+}
+
+.step-circle.completed::before {
+  content: "✓";
+  font-size: 1.2rem;
+}
+
+/* Step Labels */
+.step-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.step-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+  flex: 1;
+  transition: color 0.3s ease;
+}
+
+.step-label.active {
+  color: #3498db;
+}
+
+/* Simplified Steps List */
+.steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.steps-list li {
+  padding: 15px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 1rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.steps-list li:last-child {
+  border-bottom: none;
+}
+
+.steps-list li.active {
+  color: #2c3e50;
+  font-weight: 600;
+  background: rgba(52, 152, 219, 0.05);
+  margin: 0 -20px;
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+
+.steps-list li::before {
+  content: counter(step-counter);
+  counter-increment: step-counter;
+  width: 24px;
+  height: 24px;
+  background: #e2e8f0;
+  color: #64748b;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.steps-list {
+  counter-reset: step-counter;
+}
+
+.steps-list li.active::before {
+  background: #3498db;
+  color: #ffffff;
+}
+
+/* Info Cards */
+.info-cards {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+}
+
+.info-card-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #3498db, #2ecc71);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.info-card-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 8px 0;
+}
+
+.info-card-content p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.info-card-content a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.info-card-content a:hover {
+  text-decoration: underline;
+}
+
+/* Right Side - Form */
+.appointment-form {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-subtitle {
+  display: block;
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+/* Enhanced Form Sections */
+.form-section {
+  margin-bottom: 35px;
+}
+
+.form-section h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.section-number {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.25);
+}
+
+/* Form Help Text */
+.form-help {
+  display: block;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 6px;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.form-group:focus-within .form-help,
+.form-group:hover .form-help {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced Form Controls - Gentler Validation */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.form-group label.required::after {
+  content: " *";
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: 3px solid rgba(52, 152, 219, 0.3);
+  outline-offset: 2px;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Gentle validation - only show on explicit validation, not real-time */
+.form-group.validated input:invalid,
+.form-group.validated select:invalid {
+  border-color: #f59e0b;
+  background-color: #fffbeb;
+}
+
+.form-group.validated input:valid,
+.form-group.validated select:valid {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Form Row Layout */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Checkbox Styling */
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.checkbox-group:hover {
+  border-color: #3498db;
+  background: #f0f9ff;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #3498db;
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Enhanced Submit Button */
+.primary-btn {
+  width: auto;
+  min-width: 200px;
+  max-width: 300px;
+  background: linear-gradient(135deg, #3498db, #2ecc71);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.3);
+  margin: 20px auto 0;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(52, 152, 219, 0.4);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.primary-btn .btn-icon {
+  transition: transform 0.3s ease;
+}
+
+.primary-btn:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+/* Submit Help Text */
+.submit-help {
+  display: block;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 3px solid #3498db;
+}
+
+/* Form Validation Feedback - Gentler Approach */
+.field-error {
+  color: #f59e0b;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.field-error::before {
+  content: "ℹ️";
+  font-size: 0.8rem;
+}
+
+.field-success {
+  color: #10b981;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.field-success::before {
+  content: "✓";
+  font-size: 0.8rem;
+}
+
+/* Gentle Form Validation States */
+.form-group.validated input:valid,
+.form-group.validated select:valid {
+  border-color: #10b981;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2310b981'%3e%3cpath d='M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+/* Remove aggressive red validation styling - keep default browser styling */
+.form-group input:invalid,
+.form-group select:invalid {
+  border-color: #e2e8f0; /* Keep neutral border color for invalid fields */
+}
+
+.form-group.show-validation input:invalid,
+.form-group.show-validation select:invalid {
+  border-color: #f59e0b;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f59e0b'%3e%3cpath d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 3a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0V3zm0 8a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .appointment-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .appointment-info {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .appointment-section {
+    padding: 40px 15px 60px;
+  }
+  
+  .appointment-section h2 {
+    font-size: 2rem;
+  }
+  
+  .appointment-info,
+  .appointment-form {
+    padding: 30px 25px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .step-progress {
+    margin-bottom: 20px;
+  }
+  
+  .step-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .step-labels {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .appointment-info,
+  .appointment-form {
+    padding: 25px 20px;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+  
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Accessibility Enhancements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Indicators */
+.step-circle:focus-visible,
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible,
+.primary-btn:focus-visible {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Animation for gentle form feedback */
+@keyframes gentle-highlight {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.form-group.gentle-error input,
+.form-group.gentle-error select,
+.form-group.gentle-error textarea {
+  border-color: #f59e0b;
+  animation: gentle-highlight 0.3s ease-in-out;
+}
+
+/* Progress Animation for Step Indicator */
+.step-progress-bar.step-1 {
+  width: 25%;
+}
+
+.step-progress-bar.step-2 {
+  width: 50%;
+}
+
+.step-progress-bar.step-3 {
+  width: 75%;
+}
+
+.step-progress-bar.step-4 {
+  width: 100%;
+}

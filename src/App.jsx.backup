@@ -9,9 +9,30 @@ import './appointment-hci-styles.css';
 
 function App() {
   const [navOpen, setNavOpen] = useState(false);
+  const [isMonthly, setIsMonthly] = useState(true);
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const [faqOpen, setFaqOpen] = useState({});
+  const [appointmentType, setAppointmentType] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState('');
+  const [appointmentTime, setAppointmentTime] = useState('');
+  const [clientName, setClientName] = useState('');
+  const [clientPhone, setClientPhone] = useState('');
+  const [clientEmail, setClientEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+              <option value="couples">Couples Counseling</option>
+              <option value="family">Family Therapy</option>
+              <option value="child">Child/Adolescent Therapy</option>
+            </select>
+            <small id="service-help" className="form-help">Choose the type of therapy that best fits your needs</small>
+            {formErrors.appointmentType && <div className="form-error">{formErrors.appointmentType}</div>} setNavOpen] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState('');
   const [appointmentTime, setAppointmentTime] = useState('');
   const [appointmentType, setAppointmentType] = useState('individual');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   
 const features = [
   {
@@ -56,6 +77,79 @@ const faqs = [
   { q: "Do you accept insurance?", a: "We accept most major insurance plans. We recommend contacting your insurance provider to verify coverage for mental health services before your first appointment." },
   { q: "How often will I need to attend therapy?", a: "Most clients start with weekly sessions, then may transition to bi-weekly as progress is made. The frequency depends on your specific situation and goals." }
 ];
+// Form validation and submission functions
+  const validateForm = (formData) => {
+    const errors = {};
+    
+    if (!formData.get('appointmentType')) {
+      errors.appointmentType = 'Please select a therapy service';
+    }
+    if (!formData.get('appointmentDate')) {
+      errors.appointmentDate = 'Please select a preferred date';
+    }
+    if (!formData.get('appointmentTime')) {
+      errors.appointmentTime = 'Please select a preferred time';
+    }
+    if (!formData.get('clientName') || formData.get('clientName').trim().length < 2) {
+      errors.clientName = 'Please enter your full name';
+    }
+    if (!formData.get('clientPhone')) {
+      errors.clientPhone = 'Please enter your phone number';
+    }
+    if (!formData.get('clientEmail') || !/^\S+@\S+\.\S+$/.test(formData.get('clientEmail'))) {
+      errors.clientEmail = 'Please enter a valid email address';
+    }
+    
+    return errors;
+  };
+
+  const handleAppointmentSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFormErrors({});
+    setSubmitSuccess(false);
+    
+    const formData = new FormData(e.target);
+    const errors = validateForm(formData);
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // Simulate API call
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setSubmitSuccess(true);
+      e.target.reset();
+      setAppointmentDate('');
+      setAppointmentTime('');
+      setAppointmentType('');
+    } catch (error) {
+      setFormErrors({ submit: 'Something went wrong. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    const button = e.target.querySelector('.contact-submit-btn');
+    const originalText = button.innerHTML;
+    
+    button.innerHTML = '<span class="btn-text">Sending...</span><span class="btn-spinner">⟳</span>';
+    button.disabled = true;
+    
+    // Simulate API call
+    setTimeout(() => {
+      alert('Thank you! Your message has been sent. We\'ll respond within 24-48 hours.');
+      e.target.reset();
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }, 2000);
+  };
+
   return (
     <div className="main-landing">
       <header className="landing-header">
@@ -200,13 +294,27 @@ const faqs = [
         <span className="form-title">New Appointment Request</span>
         <span className="form-subtitle">Please fill out all required fields marked with *</span>
       </div>
-      <form onSubmit={e => { e.preventDefault(); alert('Thank you! We\'ll contact you shortly to confirm your appointment.'); }} aria-label="Appointment request form">
+      <form onSubmit={handleAppointmentSubmit} aria-label="Appointment request form">
+        {submitSuccess && (
+          <div className="success-message">
+            <span className="success-icon">✓</span>
+            <span>Thank you! We'll contact you within 24 hours to confirm your appointment.</span>
+          </div>
+        )}
+        
+        {formErrors.submit && (
+          <div className="error-message">
+            <span className="error-icon">⚠</span>
+            <span>{formErrors.submit}</span>
+          </div>
+        )}
         <div className="form-section">
           <h4><span className="section-number">1</span>Appointment Details</h4>
           <div className="form-group">
             <label htmlFor="appointmentType" className="required-field">Therapy Service</label>
             <select 
               id="appointmentType"
+              name="appointmentType"
               value={appointmentType} 
               onChange={e => setAppointmentType(e.target.value)}
               required
@@ -219,6 +327,8 @@ const faqs = [
               <option value="child">Child/Adolescent Therapy</option>
             </select>
             <small id="service-help" className="form-help">Choose the type of therapy that best fits your needs</small>
+            {formErrors.appointmentType && <div className="form-error">{formErrors.appointmentType}</div>}
+            {formErrors.appointmentType && <div className="form-error">{formErrors.appointmentType}</div>}
           </div>
           
           <div className="form-row">
@@ -226,6 +336,7 @@ const faqs = [
               <label htmlFor="appointmentDate" className="required-field">Preferred Date</label>
               <input 
                 id="appointmentDate"
+                name="appointmentDate"
                 type="date" 
                 value={appointmentDate}
                 onChange={e => setAppointmentDate(e.target.value)}
@@ -234,12 +345,15 @@ const faqs = [
                 aria-describedby="date-help"
               />
               <small id="date-help" className="form-help">Select your preferred appointment date</small>
+              {formErrors.appointmentDate && <div className="form-error">{formErrors.appointmentDate}</div>}
+              {formErrors.appointmentDate && <div className="form-error">{formErrors.appointmentDate}</div>}
             </div>
             
             <div className="form-group">
               <label htmlFor="appointmentTime" className="required-field">Preferred Time</label>
               <select
                 id="appointmentTime"
+                name="appointmentTime"
                 value={appointmentTime}
                 onChange={e => setAppointmentTime(e.target.value)}
                 required
@@ -256,6 +370,8 @@ const faqs = [
                 <option value="17:00">5:00 PM</option>
               </select>
               <small id="time-help" className="form-help">Choose your preferred time slot</small>
+              {formErrors.appointmentTime && <div className="form-error">{formErrors.appointmentTime}</div>}
+              {formErrors.appointmentTime && <div className="form-error">{formErrors.appointmentTime}</div>}
             </div>
           </div>
         </div>
@@ -266,12 +382,15 @@ const faqs = [
             <label htmlFor="clientName" className="required-field">Full Name</label>
             <input 
               id="clientName" 
+              name="clientName"
               type="text" 
               placeholder="Enter your full name" 
               required 
               aria-describedby="name-help"
             />
             <small id="name-help" className="form-help">Please provide your full legal name</small>
+            {formErrors.clientName && <div className="form-error">{formErrors.clientName}</div>}
+            {formErrors.clientName && <div className="form-error">{formErrors.clientName}</div>}
           </div>
           
           <div className="form-row">
@@ -279,24 +398,30 @@ const faqs = [
               <label htmlFor="clientPhone" className="required-field">Phone Number</label>
               <input 
                 id="clientPhone" 
+                name="clientPhone"
                 type="tel" 
                 placeholder="(555) 555-5555" 
                 required 
                 aria-describedby="phone-help"
               />
               <small id="phone-help" className="form-help">Best number to reach you</small>
+              {formErrors.clientPhone && <div className="form-error">{formErrors.clientPhone}</div>}
+              {formErrors.clientPhone && <div className="form-error">{formErrors.clientPhone}</div>}
             </div>
             
             <div className="form-group">
               <label htmlFor="clientEmail" className="required-field">Email Address</label>
               <input 
                 id="clientEmail" 
+                name="clientEmail"
                 type="email" 
                 placeholder="your@email.com" 
                 required 
                 aria-describedby="email-help"
               />
               <small id="email-help" className="form-help">We'll send confirmation details here</small>
+              {formErrors.clientEmail && <div className="form-error">{formErrors.clientEmail}</div>}
+              {formErrors.clientEmail && <div className="form-error">{formErrors.clientEmail}</div>}
             </div>
           </div>
           
@@ -317,11 +442,12 @@ const faqs = [
           </div>
         </div>
         
-        <button type="submit" className="primary-btn" aria-describedby="submit-help">
-          <span className="btn-text">Request Appointment</span>
+        <button type="submit" className="primary-btn" aria-describedby="submit-help" disabled={isSubmitting}>
+          <span className="btn-text">{isSubmitting ? 'Submitting...' : 'Request Appointment'}</span>
           <span className="btn-icon" aria-hidden="true">→</span>
         </button>
         <small id="submit-help" className="submit-help">We'll contact you within 24 hours to confirm your appointment</small>
+        {formErrors.submit && <div className="form-error submit-error">{formErrors.submit}</div>}
       </form>
     </div>
   </div>
@@ -451,7 +577,7 @@ const faqs = [
           <span className="form-title">Send Us a Message</span>
         </div>
         
-        <form onSubmit={e => { e.preventDefault(); alert('Thank you! Your message has been sent. We\'ll respond within 24-48 hours.'); }}>
+        <form onSubmit={handleContactSubmit}>
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="contactName">Your Name *</label>
